@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, Dimensions} from 'react-native'
+import {View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback} from 'react-native'
 import { Entypo } from '@expo/vector-icons'
 
-const AudioListItem = ({title, duration, thumbnail, onOptionPress}: any) => {
+const AudioListItem = ({title, duration, thumbnail, onOptionPress, onAudioPress}: any) => {
     return (
         <View style={styles.container}>
+            <TouchableWithoutFeedback onPress={onAudioPress}>
             <View style={styles.leftContainer}>
                 <View style={styles.thumbnail}>
                     <Text style={styles.thumbnailText}>
@@ -18,6 +19,7 @@ const AudioListItem = ({title, duration, thumbnail, onOptionPress}: any) => {
                     <Text style={styles.timeText}>{duration}</Text>
                 </View>
             </View>
+            </TouchableWithoutFeedback>
             <View style={styles.rightContainer}>
                 <Entypo
                     onPress ={onOptionPress}
