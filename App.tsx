@@ -2,12 +2,18 @@ import {NavigationContainer} from "@react-navigation/native";
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import AppNavigator from "./src/navigation/AppNavigation";
-
+import {AudioProvider} from './src/context/AudioProvider'
+import AudioListItem from "./src/components/AudioListItem";
 export default function App() {
   return (
-    <NavigationContainer>
-        <AppNavigator/>
-    </NavigationContainer>
+      // <AudioProvider>
+      //     <NavigationContainer>
+      //         <AppNavigator/>
+      //     </NavigationContainer>
+      // </AudioProvider>
+      <View style={{marginTop:50}}>
+          <AudioListItem/>
+      </View>
   );
 }
 
