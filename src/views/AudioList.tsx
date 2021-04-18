@@ -42,7 +42,8 @@ class AudioList extends React.Component<any,any> {
                     return this.context.updateState(this.context, {
                         currentAudio:item,
                         playbackObject: playbackObject,
-                        soundObject:status
+                        soundObject:status,
+                        isPlaying:true
                     })
                 }
             )
@@ -52,7 +53,8 @@ class AudioList extends React.Component<any,any> {
                 (status:AVPlaybackStatus) => {
                     console.log(status)
                     return this.context.updateState(this.context, {
-                        soundObject:status
+                        soundObject:status,
+                        isPlaying:false
                     })
                 }
             )
@@ -65,7 +67,8 @@ class AudioList extends React.Component<any,any> {
                 (status:AVPlaybackStatus) => {
                     console.log(status)
                     return this.context.updateState(this.context, {
-                        soundObject:status
+                        soundObject:status,
+                        isPlaying:true
                     })
                 }
             )
@@ -77,16 +80,19 @@ class AudioList extends React.Component<any,any> {
                     return this.context.updateState(this.context, {
                         currentAudio:item,
                         soundObject:status,
+                        isPlaying:true
                     })
                 }
             )
         }
     }
 
-    private rowRenderer = (type:any, item:any) => {
+    private rowRenderer = (type:any, item:any, index:any, extendedState:any) => {
         return (
             <AudioListItem
                 title={item.filename}
+                isPlaying={extendedState.isPlaying}
+                activeListItem={this.context.currentAudio === item}
                 duration={item.duration}
                 thumbnail={item.filename[0]}
                 onAudioPress={()=>this.handleAudioPress(item)}
@@ -102,8 +108,7 @@ class AudioList extends React.Component<any,any> {
         return (
             // @ts-ignore
             <AudioContext.Consumer>
-                { ({dataProvider}:any) => {
-                    // @ts-ignore
+                {({dataProvider, isPlaying}:any) =>{
                     return (
                         <View style={{flex:1}}>
 
@@ -111,6 +116,7 @@ class AudioList extends React.Component<any,any> {
                                 dataProvider={dataProvider}
                                 layoutProvider={this.layoutProvider}
                                 rowRenderer={this.rowRenderer}
+                                extendedState={{isPlaying}}
                             />
 
                             <OptionModal
@@ -125,9 +131,7 @@ class AudioList extends React.Component<any,any> {
             </AudioContext.Consumer>
         )
     }
-};
-
-
+}
 
 export default AudioList;
 

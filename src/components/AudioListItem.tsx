@@ -2,14 +2,22 @@ import React from 'react';
 import {View, Text, StyleSheet, Dimensions, TouchableWithoutFeedback} from 'react-native'
 import { Entypo } from '@expo/vector-icons'
 
-const AudioListItem = ({title, duration, thumbnail, onOptionPress, onAudioPress}: any) => {
+const renderPlayPauseIcon = (isPlaying: any) => {
+    if (isPlaying){
+        return <Entypo name="controller-paus" size={24} color={'black'}/>
+    }
+    return <Entypo name="controller-play" size={24} color={'black'}/>
+}
+const AudioListItem = ({title, duration, thumbnail, onOptionPress, onAudioPress, isPlaying, activeListItem}: any) => {
     return (
         <View style={styles.container}>
             <TouchableWithoutFeedback onPress={onAudioPress}>
             <View style={styles.leftContainer}>
                 <View style={styles.thumbnail}>
                     <Text style={styles.thumbnailText}>
-                        {thumbnail}
+                        {/*{thumbnail}*/}
+                        {activeListItem ? renderPlayPauseIcon(isPlaying) : thumbnail }
+                        {/*{}*/}
                     </Text>
                 </View>
                 <View style={styles.titleContainer}>
