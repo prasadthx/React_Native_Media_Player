@@ -106,7 +106,6 @@ class AudioList extends React.Component<any,any> {
 
     render() {
         return (
-            // @ts-ignore
             <AudioContext.Consumer>
                 {({dataProvider, isPlaying}:any) =>{
                     return (
@@ -130,7 +129,7 @@ class AudioList extends React.Component<any,any> {
                 }}
             </AudioContext.Consumer>
         )
-    }
+    };
 }
 
 export default AudioList;
