@@ -5,7 +5,7 @@ import {LayoutProvider, RecyclerListView} from 'recyclerlistview'
 import AudioListItem from "../components/AudioListItem";
 import OptionModal from "../components/OptionModal";
 import {Audio, AVPlaybackStatus} from 'expo-av';
-import {pause, play, resume} from '../misc/audioController'
+import {pause, play, resume, playAnother} from '../misc/audioController'
 
 class AudioList extends React.Component<any,any> {
     private currentItem: {};
@@ -47,7 +47,7 @@ class AudioList extends React.Component<any,any> {
                 }
             )
         }
-        else if(soundObject.isLoaded && soundObject.isPlaying){
+        else if(soundObject.isLoaded && soundObject.isPlaying && currentAudio.id === item.id){
             pause(playbackObject).then(
                 (status:AVPlaybackStatus) => {
                     console.log(status)
@@ -66,6 +66,17 @@ class AudioList extends React.Component<any,any> {
                     console.log(status)
                     return this.context.updateState(this.context, {
                         soundObject:status
+                    })
+                }
+            )
+        }
+
+        else if(soundObject.isLoaded && currentAudio !== item.id){
+            playAnother(playbackObject, item.uri).then(
+                (status:any) => {
+                    return this.context.updateState(this.context, {
+                        currentAudio:item,
+                        soundObject:status,
                     })
                 }
             )

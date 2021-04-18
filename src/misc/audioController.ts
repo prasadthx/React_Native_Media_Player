@@ -38,3 +38,19 @@ export const resume = (playbackObject:Audio.Sound):Promise<AVPlaybackStatus> => 
 
 
 //select another audio
+
+export const playAnother = (playbackObject:Audio.Sound, uri:string) => {
+    return playbackObject.stopAsync().then(
+        () => {
+            return playbackObject.unloadAsync().then(
+                () => {
+                    return play(playbackObject, uri).then(
+                        (status) => {
+                            return status;
+                        }
+                    )
+                }
+            )
+        }
+    )
+}
