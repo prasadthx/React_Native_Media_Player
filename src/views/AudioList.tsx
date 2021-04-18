@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {View, StyleSheet, Text, ScrollView, Dimensions} from 'react-native'
 import {AudioContext} from "../context/AudioProvider";
 import {LayoutProvider, RecyclerListView} from 'recyclerlistview'
+import AudioListItem from "../components/AudioListItem";
 
 class AudioList extends React.Component {
     static contextType = AudioContext
@@ -19,7 +20,9 @@ class AudioList extends React.Component {
     })
 
     rowRenderer = (type:any, item:any) => {
-        return <Text>{item.filename}</Text>
+        return (
+            <AudioListItem title={item.filename} duration={item.duration} thumbnail={item.filename[0]}/>
+        )
     }
 
     render() {

@@ -6,14 +6,11 @@ import {AudioProvider} from './src/context/AudioProvider'
 import AudioListItem from "./src/components/AudioListItem";
 export default function App() {
   return (
-      // <AudioProvider>
-      //     <NavigationContainer>
-      //         <AppNavigator/>
-      //     </NavigationContainer>
-      // </AudioProvider>
-      <View style={{marginTop:50}}>
-          <AudioListItem/>
-      </View>
+      <AudioProvider>
+          <NavigationContainer>
+              <AppNavigator/>
+          </NavigationContainer>
+      </AudioProvider>
   );
 }
 

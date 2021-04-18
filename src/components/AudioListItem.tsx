@@ -2,19 +2,21 @@ import React from 'react';
 import {View, Text, StyleSheet, Dimensions} from 'react-native'
 import { Entypo } from '@expo/vector-icons'
 
-const AudioListItem = (props:any) => {
+const AudioListItem = ({title, duration, thumbnail}: any) => {
+    console.log(thumbnail)
     return (
         <View style={styles.container}>
             <View style={styles.leftContainer}>
                 <View style={styles.thumbnail}>
                     <Text style={styles.thumbnailText}>
-                        A
+                        {thumbnail}
                     </Text>
                 </View>
                 <View style={styles.titleContainer}>
                     <Text numberOfLines={1} style={styles.title}>
-                        Scam Song Axajskskdjfksjdf
+                        {title}
                     </Text>
+                    <Text style={styles.timeText}>{duration}</Text>
                 </View>
             </View>
             <View style={styles.rightContainer}>
@@ -30,7 +32,6 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         height:50,
         width : Dimensions.get('window').width -80,
-        backgroundColor:'gray',
     },
     rightContainer: {
         flex:0.1,
@@ -51,13 +52,16 @@ const styles = StyleSheet.create({
         flex:0.2,
         height:50,
         justifyContent:'center',
-        borderRadius:25,
-        backgroundColor:'green',
+        borderRadius:25
     },
     thumbnailText: {
         fontWeight:'bold',
         fontSize:22,
         textAlign:'center'
+    },
+    timeText:{
+        color:'grey',
+        fontWeight:'200'
     }
 })
 
