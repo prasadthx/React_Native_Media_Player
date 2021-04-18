@@ -2,8 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, Dimensions} from 'react-native'
 import { Entypo } from '@expo/vector-icons'
 
-const AudioListItem = ({title, duration, thumbnail}: any) => {
-    console.log(thumbnail)
+const AudioListItem = ({title, duration, thumbnail, onOptionPress}: any) => {
     return (
         <View style={styles.container}>
             <View style={styles.leftContainer}>
@@ -20,7 +19,11 @@ const AudioListItem = ({title, duration, thumbnail}: any) => {
                 </View>
             </View>
             <View style={styles.rightContainer}>
-                <Entypo name="dots-three-vertical" size={24} color={'black'}/>
+                <Entypo
+                    onPress ={onOptionPress}
+                    name="dots-three-vertical"
+                    size={24}
+                    color={'black'}/>
             </View>
         </View>
     )
