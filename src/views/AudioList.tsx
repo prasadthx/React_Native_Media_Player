@@ -4,7 +4,8 @@ import {AudioContext} from "../context/AudioProvider";
 import {LayoutProvider, RecyclerListView} from 'recyclerlistview'
 import AudioListItem from "../components/AudioListItem";
 import OptionModal from "../components/OptionModal";
-import { Audio } from 'expo-av'
+import {Audio, AVPlaybackStatus} from 'expo-av';
+import {pause, play, resume} from '../misc/audioController'
 
 class AudioList extends React.Component<any,any> {
     private currentItem: {};
@@ -12,9 +13,6 @@ class AudioList extends React.Component<any,any> {
         super(props);
         this.state = {
             optionModalVisible:false,
-            playbackObject:null,
-            soundObject:null,
-            currentAudio:null
         }
         this.currentItem = {}
     }
@@ -33,29 +31,44 @@ class AudioList extends React.Component<any,any> {
     })
 
     private handleAudioPress(item:any){
-        if(this.state.soundObject===null) {
+
+        const {currentAudio, playbackObject, soundObject} = this.context
+
+        if(soundObject===null) {
             const playbackObject = new Audio.Sound()
-            playbackObject.loadAsync({uri: item.uri}, {shouldPlay: true}).then(
-                (result) => {
-                    this.setState({playbackObject: playbackObject, soundObject: result, currentAudio:item})
-                    console.log(item.filename + ' playing')
-                })
-        }
-        if(this.state.soundObject.isLoaded && this.state.soundObject.isPlaying){
-            this.state.playbackObject.setStatusAsync({shouldPlay:false}).then(
-                (status:any) => {
-                    return this.setState({soundObject:status})
+            play(playbackObject, item.uri).then(
+                (status) => {
+                    console.log(status)
+                    return this.context.updateState(this.context, {
+                        currentAudio:item,
+                        playbackObject: playbackObject,
+                        soundObject:status
+                    })
                 }
             )
         }
-        if(this.state.soundObject.isLoaded &&
-            !this.state.soundObject.isPlaying &&
-            this.state.currentAudio.id === item.id){
-                this.state.playbackObject.playAsync().then(
-                    (result:any) => {
-                        return this.setState({soundObject:result})
-                    }
-                )
+        else if(soundObject.isLoaded && soundObject.isPlaying){
+            pause(playbackObject).then(
+                (status:AVPlaybackStatus) => {
+                    console.log(status)
+                    return this.context.updateState(this.context, {
+                        soundObject:status
+                    })
+                }
+            )
+        }
+        else if(soundObject.isLoaded &&
+           !soundObject.isPlaying &&
+           currentAudio.id === item.id
+        ){
+            resume(playbackObject).then(
+                (status:AVPlaybackStatus) => {
+                    console.log(status)
+                    return this.context.updateState(this.context, {
+                        soundObject:status
+                    })
+                }
+            )
         }
     }
 
