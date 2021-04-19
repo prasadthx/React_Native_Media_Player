@@ -7,6 +7,7 @@ import {DataProvider} from 'recyclerlistview';
 export const AudioContext = createContext()
 
 export class AudioProvider extends React.Component<any, any>{
+    private totalAudioCount: number;
     constructor(props:any) {
         super(props);
         this.state = {
@@ -15,10 +16,13 @@ export class AudioProvider extends React.Component<any, any>{
             dataProvider : new DataProvider( (r1,r2) => r1!==r2),
             playbackObject:null,
             soundObject:null,
-            currentAudio:null,
+            currentAudio:{},
             isPlaying:false,
-            currentAudioIndex:null
+            currentAudioIndex:null,
+            playbackPosition:null,
+            playbackDuration:null,
         }
+        this.totalAudioCount = 0;
     }
 
 
@@ -39,6 +43,7 @@ export class AudioProvider extends React.Component<any, any>{
             mediaType : 'audio'
         }).then(
             (media) => {
+                this.totalAudioCount = media.totalCount
                 MediaLibrary.getAssetsAsync({
                     mediaType:'audio',
                     first: media.totalCount
@@ -88,7 +93,7 @@ export class AudioProvider extends React.Component<any, any>{
     }
 
     render() {
-        const {audioFiles, dataProvider, permissionError, currentAudio, playbackObject, soundObject, isPlaying, currentAudioIndex} = this.state;
+        const {audioFiles, dataProvider, permissionError, currentAudio, playbackObject, soundObject, isPlaying, currentAudioIndex, playbackDuration, playbackPosition} = this.state;
         if(permissionError){
             return (
                 <View>
@@ -97,7 +102,7 @@ export class AudioProvider extends React.Component<any, any>{
             )
         }
         return (
-            <AudioContext.Provider value={{audioFiles,dataProvider, currentAudio, playbackObject, soundObject, isPlaying, currentAudioIndex, updateState:this.updateState}}>
+            <AudioContext.Provider value={{audioFiles,dataProvider, currentAudio, playbackObject, soundObject, isPlaying, currentAudioIndex, updateState:this.updateState, totalAudioCount:this.totalAudioCount, playbackPosition, playbackDuration}}>
                 {this.props.children}
             </AudioContext.Provider>
         );

@@ -39,12 +39,14 @@ class AudioList extends React.Component<any,any> {
             play(playbackObject, item.uri).then(
                 (status) => {
                     console.log(status)
-                    return this.context.updateState(this.context, {
+                    this.context.updateState(this.context, {
                         currentAudio:item,
                         playbackObject: playbackObject,
                         soundObject:status,
                         isPlaying:true
                     })
+                    return playbackObject.setOnPlaybackStatusUpdate(this.onPlaybackStatusUpdate)
+
                 }
             )
         }
@@ -130,6 +132,15 @@ class AudioList extends React.Component<any,any> {
             </AudioContext.Consumer>
         )
     };
+
+    private onPlaybackStatusUpdate(playbackStatus:any) {
+        if (playbackStatus.isLoaded && playbackStatus.isPlaying){
+            this.context.updateState({
+                playbackPosition : playbackStatus.positionMillis,
+                playbackDuration : playbackStatus.durationMillis
+            })
+        }
+    }
 }
 
 export default AudioList;
